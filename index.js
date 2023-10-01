@@ -62,6 +62,10 @@ bot.on('message', async (msg) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 app.post('/web-data', async (req, res) => {
   const { queryId, products, totalPrice } = req.body;
 
