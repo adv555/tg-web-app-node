@@ -58,7 +58,9 @@ bot.on('message', async (msg) => {
       setTimeout(async () => {
         await bot.sendMessage(chatId, 'Here is your discount code: 10%OFF');
       }, 3000);
-    } catch (error) {}
+    } catch (error) {
+      console.log('🚀 ~ file: index.js:57 ~ bot.on ~ error', error);
+    }
   }
 });
 
@@ -71,32 +73,26 @@ app.post('/web-data', async (req, res) => {
 
   try {
     await bot.answerWebAppQuery(queryId, {
-      id: queryId,
       type: 'article',
+      id: queryId,
       title: 'Order created!',
       input_message_content: {
         message_text: `
         Congratulations 🎉🎉🎉
         Your order has been created successfully.
-        Total Price: ${totalPrice}$
+        Total Price: ${totalPrice}$,
+        ${products.map((product) => product.title).join(', ')}
       `,
       },
     });
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    await bot.answerWebAppQuery(queryId, {
-      id: queryId,
-      type: 'article',
-      title: 'Order is not created',
-      input_message_content: {
-        message_text: 'Order is not created. Please try again.',
-      },
-    });
-
     return res.status(500).json({ success: false });
   }
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server is running on http://localhost:${PORT}`),
+);
